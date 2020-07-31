@@ -58,6 +58,7 @@ const Movie = ({activeMovieId, index, movie, open}: MovieProps) => {
                     {opacity: cond(eq(activeMovieId, index), 0, 1)},
                 ]}>
                 <Poster movie={movie} />
+                
             </Animated.View>
         </TouchableWithoutFeedback>
     );

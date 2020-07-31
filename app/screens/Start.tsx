@@ -1,7 +1,7 @@
-import {RouteProp, useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {SafeAreaView, ScrollView, StatusBar} from 'react-native';
-import {useValue} from 'react-native-redash';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, StatusBar, FlatList } from 'react-native';
+import { useValue } from 'react-native-redash';
 
 import Modal from '@components/Modal';
 import Movie from '@components/Movie';
@@ -24,13 +24,13 @@ type StartRoute = RouteProp<StartParamList, 'Start'>;
 
 const Start = () => {
     const route = useRoute<StartRoute>();
-    const {movies} = route.params;
+    const { movies } = route.params;
     const activeMovieId = useValue<number>(-1);
     const [modal, setModal] = useState<ModalState | null>(null);
 
     const open = (index: number, movie: MovieType, position: PositionType) => {
         activeMovieId.setValue(index);
-        setModal({movie, position});
+        setModal({ movie, position });
     };
 
     const close = () => {
@@ -42,7 +42,24 @@ const Start = () => {
         <>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
-                <ScrollView contentInsetAdjustmentBehavior="automatic">
+                
+                <FlatList
+                    data={movies}
+                    renderItem={({ item, index }) =>
+                        <Movie
+                            activeMovieId={activeMovieId}
+                            key={item.name}
+                            index={index}
+                            movie={item}
+                            open={open}
+                        />
+                    }
+                    keyExtractor={item => item.name}
+                    >
+
+                </FlatList>
+
+                {/* <ScrollView contentInsetAdjustmentBehavior="automatic">
                     {movies.map((movie, index) => (
                         <Movie
                             activeMovieId={activeMovieId}
@@ -52,7 +69,7 @@ const Start = () => {
                             open={open}
                         />
                     ))}
-                </ScrollView>
+                </ScrollView> */}
                 {modal !== null && <Modal {...modal} close={close} />}
             </SafeAreaView>
         </>
