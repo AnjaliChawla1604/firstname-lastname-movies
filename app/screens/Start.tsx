@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StatusBar, FlatList } from 'react-native';
+import { SafeAreaView, ScrollView, StatusBar, FlatList, useWindowDimensions } from 'react-native';
 import { useValue } from 'react-native-redash';
 
 import Modal from '@components/Modal';
@@ -38,11 +38,14 @@ const Start = () => {
         setModal(null);
     };
 
+    const { height } = useWindowDimensions()
+    const listCellHeight = height/2
+
     return (
         <>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
-                
+
                 <FlatList
                     data={movies}
                     renderItem={({ item, index }) =>
@@ -54,8 +57,13 @@ const Start = () => {
                             open={open}
                         />
                     }
+                    getItemLayout={(data, index) => (
+                        { length: listCellHeight, offset: listCellHeight * index, index }
+                    )}
+                    initialNumToRender={3}
+                    removeClippedSubviews={true}
                     keyExtractor={item => item.name}
-                    >
+                >
 
                 </FlatList>
 
