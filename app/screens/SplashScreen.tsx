@@ -29,6 +29,7 @@ const Splash = () => {
             useNativeDriver: true,
         }).start(() => {
             const movies: Array<Movie> = generateMovies(25, 5);
+
             navigation.reset({
                 index: 0,
                 routes: [{name: 'Start', params: {movies}}],
